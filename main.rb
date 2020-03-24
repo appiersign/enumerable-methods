@@ -22,8 +22,10 @@ module Enumerable
       length.times { |x| yield(x, self[x]) }
     end
   end
-end
 
-# [1, 2].my_each_with_index { |x, y| puts "#{x}, #{y}" }
-# [1, 2, 4].my_each_with_index { |a, b| puts"(#{a}, #{b})" }
-(1...5).to_a.my_each_with_index { |x, y| puts "#{x} => #{y}" }
+  def my_select
+    array = []
+    my_each { |x| array << x if yield(x) }
+    array
+  end
+end
