@@ -1,16 +1,29 @@
 module Enumerable
-  def self.my_each(array)
-    for x in array do
-      yield(x)
+  def my_each
+    if self.class == Range
+      arr = to_a
+      arr.length.times { |x| yield(arr[x]) }
+    elsif self.class == Hash
+      hash_keys = keys
+      length.times { |x| yield(self[hash_keys[x]]) }
+    else
+      length.times { |x| yield(self[x]) }
     end
   end
 
-  def self.my_each_with_index(array)
-    for x in (0...array.length) do
-      yield(x, array[x])
+  def my_each_with_index
+    if is_a? Range
+      arr = to_a
+      arr.length.times { |x| yield(x, arr[x]) }
+    elsif self.class == Hash
+      hash_keys = keys
+      length.times { |x| yield(hash_keys[x], self[hash_keys[x]]) }
+    else
+      length.times { |x| yield(x, self[x]) }
     end
   end
 end
 
-# Enumerable.my_each([1, 2, 4]) { |a| puts a }
-Enumerable.my_each_with_index([1, 2, 4]) { |a, b| puts(a, b) }
+# [1, 2].my_each_with_index { |x, y| puts "#{x}, #{y}" }
+# [1, 2, 4].my_each_with_index { |a, b| puts"(#{a}, #{b})" }
+(1...5).to_a.my_each_with_index { |x, y| puts "#{x} => #{y}" }
