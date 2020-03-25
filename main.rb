@@ -29,12 +29,20 @@ module Enumerable
     array
   end
 
-  def my_all
-    my_select { |x| x if yield(x) }
+  def my_all?
+    array = []
+    my_select { |x| array << x if yield(x) }
+    array.length == length
   end
 
   def my_any?
     my_each { |x| true if yield(x) }
     false
+  end
+
+  def my_none?
+    array = []
+    my_select { |x| array << x unless yield(x) }
+    array.length == length
   end
 end
