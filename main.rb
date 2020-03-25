@@ -32,4 +32,9 @@ module Enumerable
   def my_all
     my_select { |x| x if yield(x) }
   end
+
+  def my_any?
+    my_each { |x| true if yield(x) }
+    false
+  end
 end
