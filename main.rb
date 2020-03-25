@@ -62,4 +62,8 @@ module Enumerable
     my_each { |x| memo = yield(memo, x) }
     memo
   end
+
+  def multiply_els
+    my_inject(1) { |p, x| p * x }
+  end
 end
