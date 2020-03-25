@@ -57,4 +57,9 @@ module Enumerable
     my_each_with_index { |x, y| self[x] = yield(y) }
     self
   end
+
+  def my_inject(memo = 0)
+    my_each { |x| memo = yield(memo, x) }
+    memo
+  end
 end
