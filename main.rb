@@ -28,4 +28,8 @@ module Enumerable
     my_each { |x| array << x if yield(x) }
     array
   end
+
+  def my_all
+    my_select { |x| x if yield(x) }
+  end
 end
