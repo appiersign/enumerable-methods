@@ -49,4 +49,9 @@ module Enumerable
   def my_count
     my_select { |x| x if yield(x) } .length
   end
+
+  def my_map
+    my_each_with_index { |x, y| self[x] = yield(y) }
+    self
+  end
 end
