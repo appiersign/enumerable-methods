@@ -45,4 +45,8 @@ module Enumerable
     my_select { |x| array << x unless yield(x) }
     array.length == length
   end
+
+  def my_count
+    my_select { |x| x if yield(x) } .length
+  end
 end
