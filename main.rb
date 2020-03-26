@@ -53,9 +53,10 @@ module Enumerable
     my_select { |x| x if yield(x) } .length
   end
 
-  def my_map
-    my_each_with_index { |x, y| self[x] = yield(y) }
-    self
+  def my_map(proc = nil)
+    array = []
+    proc ? my_each { |x| array << proc.call(x) } : my_each { |x| array << yield(x) }
+    array
   end
 
   def my_inject(memo = 0)
@@ -63,7 +64,8 @@ module Enumerable
     memo
   end
 
-  def multiply_els
-    my_inject(1) { |p, x| p * x }
+  def multiply_els(array)
+    array.my_inject(1) { |p, x| p * x }
   end
 end
+
