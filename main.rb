@@ -68,4 +68,3 @@ module Enumerable
     array.my_inject(1) { |p, x| p * x }
   end
 end
-
