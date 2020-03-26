@@ -50,7 +50,7 @@ module Enumerable
   end
 
   def my_count
-    my_select { |x| x if yield(x) } .length
+    my_select { |x| x if yield(x) }.length
   end
 
   def my_map(proc = nil)
