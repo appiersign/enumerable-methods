@@ -56,21 +56,22 @@ module Enumerable
   end
 
   def my_any?
+    any = true
     if block_given?
-      my_each { |x| true if yield(x) }
-      false
+      my_each do |x|
+        any = yield(x) == true
+        break if any
+      end
     end
-    true
+    any
   end
 
   def my_none?(args = nil)
-    array = []
-    if args.nil?
-      my_select { |x| array << x unless yield(x) }
+    if block_given?
+      args
     else
-      my_select { |x| array << x if x.match(args) }
+      empty? || !my_any? { |x| x == true }
     end
-    array.empty?
   end
 
   def my_count
@@ -93,6 +94,6 @@ module Enumerable
   end
 end
 
-print [1, 2, 3].my_all?(/d/)
+print [].my_none?
 puts
-print [1, 2, 3].all?(/d/)
+# print [1, 2, 3].any? { |x| x == 0 }
