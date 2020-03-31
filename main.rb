@@ -69,8 +69,14 @@ module Enumerable
     true
   end
 
-  def my_count
-    my_select { |x| x if yield(x) }.length
+  def my_count(arg = nil)
+    if arg.nil? && block_given?
+      my_select { |x| x if yield(x) }.length
+    elsif arg
+      my_select { |x| x if x == arg }.length
+    else
+      length
+    end
   end
 
   def my_map(proc = nil)
@@ -88,7 +94,3 @@ module Enumerable
     array.my_inject(1) { |p, x| p * x }
   end
 end
-
-print [1, 3.14, 42].my_none?(Float)
-puts
-print [1, 3.14, 42].none?(Float)
