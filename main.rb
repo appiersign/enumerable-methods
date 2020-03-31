@@ -66,12 +66,17 @@ module Enumerable
     any
   end
 
-  def my_none?(args = nil)
-    if block_given?
-      args
+  def my_none?(arg = nil)
+    if arg.nil? && block_given?
+      my_each { |x| return false if yield(x) == true }
+    elsif arg.is_a?(Regexp)
+      my_each { |x| return false if x.match(arg) }
+    elsif arg.is_a?(Module)
+      my_each { |x| return false if x.is_a?(arg) }
     else
-      empty? || !my_any? { |x| x == true }
+      my_each { |x| return false if x == true }
     end
+    true
   end
 
   def my_count
@@ -94,6 +99,6 @@ module Enumerable
   end
 end
 
-print [].my_none?
+print [1, 3.14, 42].my_none?(Float)
 puts
-# print [1, 2, 3].any? { |x| x == 0 }
+print [1, 3.14, 42].none?(Float)
