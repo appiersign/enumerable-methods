@@ -1,46 +1,37 @@
 module Enumerable
   def my_each
-    if block_given?
-      if self.class == Range
-        arr = to_a
-        arr.length.times { |x| yield(arr[x]) }
-      elsif self.class == Hash
-        hash_keys = keys
-        length.times { |x| yield(self[hash_keys[x]]) }
-      else
-        length.times { |x| yield(self[x]) }
-      end
-      self
+    to_enum(:my_each) unless block_given?
+    if self.class == Range
+      arr = to_a
+      arr.length.times { |x| yield(arr[x]) }
+    elsif self.class == Hash
+      hash_keys = keys
+      length.times { |x| yield(self[hash_keys[x]]) }
     else
-      to_enum(:my_each)
+      length.times { |x| yield(self[x]) }
     end
+    self
   end
 
   def my_each_with_index
-    if block_given?
-      if is_a? Range
-        arr = to_a
-        arr.length.times { |x| yield(x, arr[x]) }
-      elsif self.class == Hash
-        hash_keys = keys
-        length.times { |x| yield(hash_keys[x], self[hash_keys[x]]) }
-      else
-        length.times { |x| yield(x, self[x]) }
-      end
-      self
+    to_enum(:my_each_with_index) unless block_given?
+    if is_a? Range
+      arr = to_a
+      arr.length.times { |x| yield(x, arr[x]) }
+    elsif self.class == Hash
+      hash_keys = keys
+      length.times { |x| yield(hash_keys[x], self[hash_keys[x]]) }
     else
-      to_enum(:my_each_with_index)
+      length.times { |x| yield(x, self[x]) }
     end
+    self
   end
 
   def my_select
-    if block_given?
-      array = []
-      my_each { |x| array << x if yield(x) }
-      array
-    else
-      to_enum(:my_select)
-    end
+    to_enum(:my_select) unless block_given?
+    array = []
+    my_each { |x| array << x if yield(x) }
+    array
   end
 
   def my_all?(arg = nil)
@@ -57,11 +48,10 @@ module Enumerable
 
   def my_any?
     any = true
-    if block_given?
-      my_each do |x|
-        any = yield(x) == true
-        break if any
-      end
+    any unless block_given?
+    my_each do |x|
+      any = yield(x) == true
+      break if any
     end
     any
   end
