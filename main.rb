@@ -40,14 +40,14 @@ module Enumerable
   end
 
   def my_all?(arg = nil)
-    return true unless block_given?
-
-    if arg.is_a?(Module)
+    if block_given?
+      my_each { |x| return false if yield(x) == false }
+    elsif arg.is_a?(Module)
       my_each { |x| return false if x.is_a?(arg) == false }
     elsif arg.is_a?(Regexp)
       my_each { |x| return false if x.match(arg) }
     else
-      my_each { |x| return false if yield(x) == false }
+      my_each { |x| return false unless x }
     end
     true
   end
@@ -116,11 +116,4 @@ module Enumerable
   end
 end
 
-block = proc { |num| num < 200 }
-p(%w[ant bear cat].my_all? { |word| word.length >= 3 })
-p(%w[ant bear cat].my_all? { |word| word.length >= 4 })
-p(%w[ant bear cat].all?(/t/))
-p([1, 2i, 3.14].all?(Numeric))
-p([nil, true, 99].all?)
-p([].all?)
-p [2,32,32].my_all?(&block)
+p [1, true, 'hi', false].my_all?
