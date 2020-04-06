@@ -16,13 +16,13 @@ module Enumerable
 
   def my_each_with_index
     if block_given?
-      length.times { |x| yield(x, self[x]) }
+      length.times { |x| yield(self[x], x) }
     elsif is_a? Range
       arr = to_a
-      arr.length.times { |x| yield(x, arr[x]) }
+      arr.length.times { |x| yield(arr[x], x) }
     elsif self.class == Hash
       hash_keys = keys
-      length.times { |x| yield(hash_keys[x], self[hash_keys[x]]) }
+      length.times { |x| yield(self[hash_keys[x], hash_keys[x]]) }
     else
       return to_enum(:my_each_with_index)
     end
@@ -111,5 +111,3 @@ module Enumerable
     array.my_inject(1) { |p, x| p * x }
   end
 end
-
-p [1, 2, 3].my_each_with_index
