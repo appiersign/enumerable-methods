@@ -70,15 +70,18 @@ module Enumerable
   end
 
   def my_none?(arg = nil)
-    if arg.nil? && block_given?
+    if block_given?
       my_each { |x| return false if yield(x) == true }
-    elsif arg.is_a?(Regexp)
-      my_each { |x| return false if x.match(arg) }
     elsif arg.is_a?(Module)
       my_each { |x| return false if x.is_a?(arg) }
-    else
+    elsif arg.is_a?(Regexp)
+      my_each { |x| return false if x.match(arg) }
+    elsif arg && !arg.is_a?(Module) && !arg.is_a?(Regexp)
       my_each { |x| return false if x == arg }
+    else
+      my_each { |x| return true unless x }
     end
+    true
   end
 
   def my_count(arg = nil)
@@ -92,38 +95,31 @@ module Enumerable
   end
 
   def my_map(proc = nil)
+    return to_enum(:my_map) unless block_given?
+
     array = []
     proc ? my_each { |x| array << proc.call(x) } : my_each { |x| array << yield(x) }
     array
   end
 
-  def my_inject(initial)
-    each do |i|
-      if initial.nil?
-        initial = i
-      elsif initial.class == Range
-        count = 0
-        while count < length
-          initial += self[count]
-          count += 1
-        end
-      else
-        initial = yield(initial, i)
-      end
+  def my_inject(initial = nil, symbol = nil)
+    arr = is_a?(Array) ? self : to_a
+    sym = initial if initial.is_a?(Symbol) || initial.is_a?(String)
+    acc = initial if initial.is_a? Integer
+
+    if initial.is_a?(Integer)
+      sym = symbol if symbol.is_a?(Symbol) || symbol.is_a?(String)
     end
-    initial
+
+    if sym
+      arr.my_each { |x| acc = acc ? acc.send(sym, x) : x }
+    elsif block_given?
+      arr.my_each { |x| acc = acc ? yield(acc, x) : x }
+    end
+    acc
   end
 
   def multiply_els(array)
     array.my_inject(1) { |p, x| p * x }
   end
 end
-
-p(%w[ant bear cat].my_any? { |word| word.length >= 3 })
-p(%w[ant bear cat].my_any? { |word| word.length >= 4 })
-p(%w[ant bear cat].my_any?(/d/))
-p([nil, true, 99].my_any?(Integer))
-p([nil, true, 99].my_any?)
-p([].my_any?)
-
-p [2,32].my_any?('cat')
