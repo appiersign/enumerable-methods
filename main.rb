@@ -88,9 +88,21 @@ module Enumerable
     array
   end
 
-  def my_inject(memo = 0)
-    my_each { |x| memo = yield(memo, x) }
-    memo
+  def my_inject(initial)
+    each do |i|
+      if initial.nil?
+        initial = i
+      elsif initial.class == Range
+        count = 0
+        while count < length
+          initial += self[count]
+          count += 1
+        end
+      else
+        initial = yield(initial, i)
+      end
+    end
+    initial
   end
 
   def multiply_els(array)
