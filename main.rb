@@ -40,15 +40,16 @@ module Enumerable
   end
 
   def my_all?(arg = nil)
-    array = []
-    if arg
-      my_select { |x| array << x if x.to_s.match(arg) and x.is_a? nil == false }
-    elsif block_given?
-      my_select { |x| array << x if yield(x) and x.is_a? nil == false }
+    return true unless block_given?
+
+    if arg.is_a?(Module)
+      my_each { |x| return false if x.is_a?(arg) == false }
+    elsif arg.is_a?(Regexp)
+      my_each { |x| return false if x.match(arg) }
     else
-      my_select { |x| array << x }
+      my_each { |x| return false if yield(x) == false }
     end
-    array.length == length
+    true
   end
 
   def my_any?(arg = nil)
@@ -115,3 +116,11 @@ module Enumerable
   end
 end
 
+block = proc { |num| num < 200 }
+p(%w[ant bear cat].my_all? { |word| word.length >= 3 })
+p(%w[ant bear cat].my_all? { |word| word.length >= 4 })
+p(%w[ant bear cat].all?(/t/))
+p([1, 2i, 3.14].all?(Numeric))
+p([nil, true, 99].all?)
+p([].all?)
+p [2,32,32].my_all?(&block)
