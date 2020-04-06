@@ -1,14 +1,15 @@
 module Enumerable
   def my_each
-    to_enum(:my_each) unless block_given?
-    if self.class == Range
+    if block_given?
+      length.times { |x| yield(self[x]) }
+    elsif self.class == Range
       arr = to_a
       arr.length.times { |x| yield(arr[x]) }
     elsif self.class == Hash
       hash_keys = keys
       length.times { |x| yield(self[hash_keys[x]]) }
     else
-      length.times { |x| yield(self[x]) }
+      return to_enum(:my_each)
     end
     self
   end
@@ -109,3 +110,5 @@ module Enumerable
     array.my_inject(1) { |p, x| p * x }
   end
 end
+
+p [1, 2, 3].my_each
