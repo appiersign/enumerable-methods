@@ -45,7 +45,9 @@ module Enumerable
     elsif arg.is_a?(Module)
       my_each { |x| return false if x.is_a?(arg) == false }
     elsif arg.is_a?(Regexp)
-      my_each { |x| return false if x.match(arg) }
+      my_each { |x| return false if x.match(arg) == false }
+    elsif arg && !arg.is_a?(Module) && !arg.is_a?(Regexp)
+      my_each { |x| return false if x != arg }
     else
       my_each { |x| return false unless x }
     end
@@ -117,3 +119,6 @@ module Enumerable
 end
 
 p [1, true, 'hi', false].my_all?
+p [1,1,1].my_all?(Integer)
+p ['d','d'].my_all?(/d/)
+p [3,3,3,3].my_all?(3)
