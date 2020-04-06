@@ -55,17 +55,18 @@ module Enumerable
   end
 
   def my_any?(arg = nil)
-    any = false
-    if arg.nil? && block_given?
-      my_each { |obj| any = true if yield(obj) }
+    if block_given?
+      my_each { |x| return true if yield(x) == true }
     elsif arg.is_a?(Module)
-      my_each { |obj| any = true if obj.is_a?(arg) }
+      my_each { |x| return true if x.is_a?(arg) }
     elsif arg.is_a?(Regexp)
-      my_each { |obj| any = true if obj.match(arg) }
+      my_each { |x| return true if x.match(arg) }
+    elsif arg && !arg.is_a?(Module) && !arg.is_a?(Regexp)
+      my_each { |x| return true if x == arg }
     else
-      my_each { |obj| any = true if obj }
+      my_each { |x| return true unless x }
     end
-    any
+    false
   end
 
   def my_none?(arg = nil)
@@ -118,7 +119,11 @@ module Enumerable
   end
 end
 
-p [1, true, 'hi', false].my_all?
-p [1,1,1].my_all?(Integer)
-p ['d','d'].my_all?(/d/)
-p [3,3,3,3].my_all?(3)
+p(%w[ant bear cat].my_any? { |word| word.length >= 3 })
+p(%w[ant bear cat].my_any? { |word| word.length >= 4 })
+p(%w[ant bear cat].my_any?(/d/))
+p([nil, true, 99].my_any?(Integer))
+p([nil, true, 99].my_any?)
+p([].my_any?)
+
+p [2,32].my_any?('cat')
