@@ -30,9 +30,12 @@ module Enumerable
   end
 
   def my_select
-    to_enum(:my_select) unless block_given?
-    array = []
-    my_each { |x| array << x if yield(x) }
+    if block_given?
+      array = []
+      my_each { |x| array << x if yield(x) }
+    else
+      return to_enum(:my_select)
+    end
     array
   end
 
@@ -111,3 +114,4 @@ module Enumerable
     array.my_inject(1) { |p, x| p * x }
   end
 end
+
