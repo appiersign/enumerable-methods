@@ -15,15 +15,16 @@ module Enumerable
   end
 
   def my_each_with_index
-    to_enum(:my_each_with_index) unless block_given?
-    if is_a? Range
+    if block_given?
+      length.times { |x| yield(x, self[x]) }
+    elsif is_a? Range
       arr = to_a
       arr.length.times { |x| yield(x, arr[x]) }
     elsif self.class == Hash
       hash_keys = keys
       length.times { |x| yield(hash_keys[x], self[hash_keys[x]]) }
     else
-      length.times { |x| yield(x, self[x]) }
+      return to_enum(:my_each_with_index)
     end
     self
   end
@@ -111,4 +112,4 @@ module Enumerable
   end
 end
 
-p [1, 2, 3].my_each
+p [1, 2, 3].my_each_with_index
