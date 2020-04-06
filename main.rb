@@ -46,12 +46,16 @@ module Enumerable
     array.length == length
   end
 
-  def my_any?
-    any = true
-    any unless block_given?
-    my_each do |x|
-      any = yield(x) == true
-      break if any
+  def my_any?(arg = nil)
+    any = false
+    if arg.nil? && block_given?
+      my_each { |obj| any = true if yield(obj) }
+    elsif arg.is_a?(Module)
+      my_each { |obj| any = true if obj.is_a?(arg) }
+    elsif arg.is_a?(Regexp)
+      my_each { |obj| any = true if obj.match(arg) }
+    else
+      my_each { |obj| any = true if obj }
     end
     any
   end
@@ -64,9 +68,8 @@ module Enumerable
     elsif arg.is_a?(Module)
       my_each { |x| return false if x.is_a?(arg) }
     else
-      my_each { |x| return false if x == true }
+      my_each { |x| return false if x == arg }
     end
-    true
   end
 
   def my_count(arg = nil)
