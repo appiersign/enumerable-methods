@@ -20,7 +20,7 @@ module Enumerable
   def my_each_with_index
     if block_given?
       length.times { |x| yield(self[x], x) }
-    elsif is_a? Range
+    elsif is_a?(Range)
       arr = to_a
       arr.length.times { |x| yield(arr[x], x) }
     elsif self.class == Hash
@@ -106,14 +106,14 @@ module Enumerable
   def my_inject(initial = nil, symbol = nil)
     arr = is_a?(Array) ? self : to_a
     sym = initial if initial.is_a?(Symbol) || initial.is_a?(String)
-    acc = initial if initial.is_a? Integer
+    acc = initial if initial.is_a?(Integer)
 
     if initial.is_a?(Integer)
       sym = symbol if symbol.is_a?(Symbol) || symbol.is_a?(String)
     end
 
     if sym
-      arr.my_each { |x| acc = acc.send(sym, x) }
+      arr.my_each { |x| acc = acc.__send__(sym, x) }
     elsif block_given?
       arr.my_each { |x| acc = yield(acc, x) }
     end
