@@ -112,9 +112,9 @@ module Enumerable
     end
 
     if sym
-      arr.my_each { |x| acc = acc ? acc.send(sym, x) : x }
+      arr.my_each { |x| acc = acc.send(sym, x) }
     elsif block_given?
-      arr.my_each { |x| acc = acc ? yield(acc, x) : x }
+      arr.my_each { |x| acc = yield(acc, x) }
     end
     acc
   end
