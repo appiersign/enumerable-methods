@@ -30,12 +30,10 @@ module Enumerable
   end
 
   def my_select
-    if block_given?
-      array = []
-      my_each { |x| array << x if yield(x) }
-    else
-      return to_enum(:my_select)
-    end
+    return to_enum(:my_select) if block_given?
+
+    array = []
+    my_each { |x| array << x if yield(x) }
     array
   end
 
