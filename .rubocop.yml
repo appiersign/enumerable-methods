@@ -44,8 +44,10 @@ Style/HashTransformKeys:
 Style/HashTransformValues:
     Enabled: false
 Layout/HashAlignment:
+  Enabled: true
   EnforcedColonStyle: key
 Layout/ExtraSpacing:
+  Enabled: true
   AllowForAlignment: false
 Layout/MultilineMethodCallIndentation:
   Enabled: true
