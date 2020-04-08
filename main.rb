@@ -46,7 +46,7 @@ module Enumerable
     elsif arg.is_a?(Module)
       my_each { |x| return false if x.is_a?(arg) == false }
     elsif arg.is_a?(Regexp)
-      my_each { |x| return false if x.match(arg) == false }
+      my_each { |x| return false unless x.match(arg) }
     elsif arg && !arg.is_a?(Module) && !arg.is_a?(Regexp)
       my_each { |x| return false if x != arg }
     else
@@ -65,7 +65,7 @@ module Enumerable
     elsif arg && !arg.is_a?(Module) && !arg.is_a?(Regexp)
       my_each { |x| return true if x == arg }
     else
-      my_each { |x| return true unless x }
+      my_each { |x| return false unless x }
     end
     false
   end
@@ -80,7 +80,7 @@ module Enumerable
     elsif arg && !arg.is_a?(Module) && !arg.is_a?(Regexp)
       my_each { |x| return false if x == arg }
     else
-      my_each { |x| return true unless x }
+      my_each { |x| return false unless x }
     end
     true
   end
