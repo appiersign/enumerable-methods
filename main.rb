@@ -106,7 +106,8 @@ module Enumerable
   def my_inject(initial = nil, symbol = nil)
     arr = is_a?(Array) ? self : to_a
     sym = initial if initial.is_a?(Symbol) || initial.is_a?(String)
-    acc = initial if initial.is_a?(Integer)
+    acc = initial.is_a?(Integer) ? initial : arr[0]
+    arr.shift unless initial.is_a?(Integer)
 
     if initial.is_a?(Integer)
       sym = symbol if symbol.is_a?(Symbol) || symbol.is_a?(String)
