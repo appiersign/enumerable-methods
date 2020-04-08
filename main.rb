@@ -56,6 +56,7 @@ module Enumerable
   end
 
   def my_any?(arg = nil)
+    any = false
     if block_given?
       my_each { |x| return true if yield(x) == true }
     elsif arg.is_a?(Module)
@@ -65,12 +66,13 @@ module Enumerable
     elsif arg && !arg.is_a?(Module) && !arg.is_a?(Regexp)
       my_each { |x| return true if x == arg }
     else
-      my_each { |x| return false unless x }
+      my_each { |x| any = true if x }
     end
-    false
+    any
   end
 
   def my_none?(arg = nil)
+    none = false
     if block_given?
       my_each { |x| return false if yield(x) == true }
     elsif arg.is_a?(Module)
@@ -80,9 +82,9 @@ module Enumerable
     elsif arg && !arg.is_a?(Module) && !arg.is_a?(Regexp)
       my_each { |x| return false if x == arg }
     else
-      my_each { |x| return false unless x }
+      my_each { |x| none = true unless x }
     end
-    true
+    none
   end
 
   def my_count(arg = nil)
