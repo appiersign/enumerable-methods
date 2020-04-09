@@ -21,6 +21,8 @@ Metrics/BlockLength:
 
 Style/Documentation:
   Enabled: false
+Style/CaseEquality:
+  Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
 Style/EachForSimpleLoop:
