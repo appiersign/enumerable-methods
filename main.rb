@@ -109,16 +109,17 @@ module Enumerable
     arr = is_a?(Array) ? self : to_a
     sym = initial if initial.is_a?(Symbol) || initial.is_a?(String)
     acc = initial.is_a?(Integer) ? initial : arr[0]
-    arr.shift unless initial.is_a?(Integer)
+    arr_temp = arr.clone
+    arr_temp.shift unless initial.is_a?(Integer)
 
     if initial.is_a?(Integer)
       sym = symbol if symbol.is_a?(Symbol) || symbol.is_a?(String)
     end
 
-    if sym
-      arr.my_each { |x| acc = acc.__send__(sym, x) }
-    elsif block_given?
-      arr.my_each { |x| acc = yield(acc, x) }
+    if block_given?
+      arr_temp.my_each { |x| acc = yield(acc, x) }
+    else
+      arr_temp.my_each { |x| acc = acc.__send__(sym, x) }
     end
     acc
   end
