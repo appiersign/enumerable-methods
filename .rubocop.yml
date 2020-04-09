@@ -1,5 +1,4 @@
 AllCops:
-  EnabledByDefault: true
   Exclude:
     - "README.md"
     - "Guardfile"
@@ -40,13 +39,3 @@ Layout/ExtraSpacing:
 Layout/MultilineMethodCallIndentation:
   Enabled: true
   EnforcedStyle: indented
-Style/Copyright:
-  Enabled: false
-Style/DocumentationMethod:
-  Enabled: false
-Style/InlineComment:
-  Enabled: false
-Style/MissingElse:
-  Enabled: false
-Style/MethodCalledOnDoEndBlock:
-  Enabled: false
