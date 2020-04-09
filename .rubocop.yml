@@ -1,4 +1,5 @@
 AllCops:
+  EnabledByDefault: true
   Exclude:
     - "README.md"
     - "Guardfile"
@@ -21,8 +22,6 @@ Metrics/BlockLength:
 
 Style/Documentation:
   Enabled: false
-Style/CaseEquality:
-  Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
 Style/EachForSimpleLoop:
@@ -33,12 +32,6 @@ Style/DefWithParentheses:
   Enabled: false
 Style/FrozenStringLiteralComment:
   EnforcedStyle: never
-Style/HashEachMethods:
-  Enabled: false
-Style/HashTransformKeys:
-  Enabled: false
-Style/HashTransformValues:
-  Enabled: false
 
 Layout/HashAlignment:
   EnforcedColonStyle: key
@@ -47,3 +40,13 @@ Layout/ExtraSpacing:
 Layout/MultilineMethodCallIndentation:
   Enabled: true
   EnforcedStyle: indented
+Style/Copyright:
+  Enabled: false
+Style/DocumentationMethod:
+  Enabled: false
+Style/InlineComment:
+  Enabled: false
+Style/MissingElse:
+  Enabled: false
+Style/MethodCalledOnDoEndBlock:
+  Enabled: false
