@@ -72,7 +72,7 @@ module Enumerable
   end
 
   def my_none?(arg = nil)
-    none = false
+    none = true
     if block_given?
       my_each { |x| return false if yield(x) == true }
     elsif arg.is_a?(Module)
@@ -82,7 +82,7 @@ module Enumerable
     elsif arg && !arg.is_a?(Module) && !arg.is_a?(Regexp)
       my_each { |x| return false if x == arg }
     else
-      my_each { |x| none = true unless x }
+      my_each { |x| return false if x }
     end
     none
   end
