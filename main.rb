@@ -123,10 +123,10 @@ module Enumerable
     end
     acc
   end
+end
 
-  def multiply_els(array)
-    array.my_inject(1) { |p, x| p * x }
-  end
+def multiply_els(array)
+  array.my_inject(1) { |p, x| p * x }
 end
 
 # rubocop: enable Metrics/ModuleLength
